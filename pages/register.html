@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
+    .icon{
+        width: 40px;
+        height: 40px;
+        background-color: rgb(156, 0, 156);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: white;
+    }
+    input{
+        padding: 15px 15px 15px 10px;
+        border-radius: 4px;
+        border: 1px solid rgb(175, 175, 175);
+    }
+    .box{
+        width: 367px;
+        border-radius: 4px;
+    }
+    a{
+        color: rgb(0, 94, 255);
+    }
+    a:hover{
+        color: rgb(17, 0, 255);
+    }
+</style>
+<body style="font-family: 'Noto Sans', sans-serif;">
+    <section style="height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <form id="formRegister" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+            <div class="icon"><span class="material-symbols-outlined">lock</span></div>
+            <div style="font-size: 32px; font-weight: 500;">Sign up</div>
+            <div style="display: flex; gap: 15px;">
+                <input id="fName" type="text" placeholder="First name *">
+                <input id="lName" type="text" placeholder="Last name *">
+            </div>
+            <label id="nameError" style="margin-right: 185px; color: red;" hidden>* Name cannot be blank</label>
+            <div><input class="box" type="email" placeholder="Email Address *" id="email"></div>
+            <label id="emailError1" style="margin-right: 200px; color: red;" hidden>* Email cannot be blank</label>
+            <label id="emailError2" style="margin-right: 200px; color: red;" hidden>* Email was registered</label>
+            <div><input class="box" type="password" placeholder="Password *" id="pass"></div>
+            <label id="passError" style="margin-right: 165px; color: red;" hidden>* Password can not be blank</label>
+            <div style="display: flex; gap: 10px; margin-right: 80px;">
+                <input type="checkbox">
+                <p>I want to receive inspiration, marketing <br> promotions and updates via email.</p>
+            </div>
+            <div><button class="box" style="padding: 10px 20px 10px 20px; color: white; font-weight: 700; background-color: rgb(0, 94, 255);
+            border: 1px solid; width: 400px; cursor: pointer;">SIGN UP</button></div>
+            <div style="margin-left: 155px;"><a href="./login.html">Already have an account? Sign in</a></div>
+            <div style="margin-top: 50px; color: rgb(165, 165, 165);">Copyright <i class="bi bi-c-circle"></i> <a style="color: rgb(165, 165, 165);" href="#">Your website</a> 2024</div>
+        </form>
+    </section>
+    <script>
+        let register = document.getElementById("formRegister");
+        let fName = document.getElementById("fName");
+        let lName = document.getElementById("lName");
+        let email = document.getElementById("email");
+        let pass = document.getElementById("pass");
+
+        let nameError = document.getElementById("nameError");
+        let emailError1 = document.getElementById("emailError1");
+        let emailError2 = document.getElementById("emailError2");
+        let passError = document.getElementById("passError");
+
+        let usersRegister = JSON.parse(localStorage.getItem("usersRegister"))||[];
+        localStorage.setItem("usersRegister", JSON.stringify(usersRegister));
+        
+        register.addEventListener("submit", function(e, i){
+            e.preventDefault();
+            if(!fName.value||!lName.value){
+                nameError.style.display = "block";
+            }else{
+                nameError.style.display = "none";
+            }
+            if(!email.value){
+                emailError1.style.display = "block";
+            }else{
+                emailError1.style.display = "none";
+            }
+            if(!pass.value){
+                passError.style.display = "block";
+            }else{
+                passError.style.display = "none";
+            }
+            for(let i=0;i<usersRegister.length;i++){
+                if(email.value == usersRegister[i].email){
+                    emailError2.style.display = "block";
+                    return;
+                }else{
+                    emailError2.style.display = "none";
+                }
+            }
+            if(fName.value && lName.value && email.value && pass.value){
+                usersRegister.push({
+                    id: Math.ceil(Math.random() * 1000000000),
+                    cart: [],
+                    name: fName.value + " " + lName.value,
+                    email: email.value,
+                    password: pass.value,
+                })
+                localStorage.setItem("usersRegister", JSON.stringify(usersRegister));
+                window.location.href = "login.html";
+            }
+        })
+    </script>
+</body>
+</html>
